@@ -83,7 +83,7 @@ async def anukarop(client, message):
 async def main():
     await app.start()
     print("Client Created")
-    await app.idle()
+    await app.run_until_disconnected()
 
 # Run the main function
 asyncio.run(main())
