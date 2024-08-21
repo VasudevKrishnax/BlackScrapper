@@ -1,15 +1,15 @@
 import random
 import time
-from telethon import TelegramClient, events
 import re
 import aiohttp
 import asyncio
+from pyrogram import Client, filters
 
-api_id = '1747534'  # Replace with your api id
-api_hash = '5a2684512006853f2e48aca9652d83ea'  # Replace with your api hash
-phone_number = '+12105468956'  # Replace with your phone number
+api_id = '26559895'  # Replace with your api id
+api_hash = '1ef0afc6e062e283e6295cb4c960c6a9'  # Replace with your api hash
+bot_token = 'YOUR_BOT_TOKEN'  # Replace with your bot token
 
-client = TelegramClient('black_scrapper', api_id, api_hash)
+app = Client('black_scrapper', api_id, api_hash, bot_token=bot_token)
 
 BIN_API_URL = 'https://bins.antipublic.cc/bins/{}'
 
@@ -34,10 +34,9 @@ async def bin_lookup(bin_number):
                 return None
 
 # Event handler for new messages
-@client.on(events.NewMessage)
-async def anukarop(event):
+@app.on_message(filters.text)
+async def anukarop(client, message):
     try:
-        message = event.message
         # Regex to match approved messages
         if re.search(r'(Approved!|Charged|authenticate_successful|𝗔𝗽𝗽𝗿𝗼𝘃𝗲𝗱|- 𝐀𝐩𝐩𝐫𝐨𝐯𝐞𝐝 ✅|APPROVED|New Cards Found By Scrapper|ꕥ Extrap [☭]|• New Cards Found By JennaS>)', message.text):
             filtered_card_info = filter_cards(message.text)
@@ -64,27 +63,27 @@ async def anukarop(event):
                   
                     # Format the message
                     formatted_message = (
-                        f"**[-]**(t.me/blackheadsop) 𝐀𝐩𝐩𝐫𝗼𝐯𝗲𝐝 ✅\n\n"
-                        f"**[-]**(t.me/blackheadsop) 𝗖𝗮𝗿𝗱: `{card_info}`\n"
-                        f"**[-]**(t.me/blackheadsop) 𝐆𝐚𝐭𝐞𝐰𝐚𝐲: Braintree Auth 4\n"
-                        f"**[-]**(t.me/blackheadsop) 𝐑𝐞𝐬𝗽𝗼𝐧𝐬𝗲: `1000: Approved`\n\n"
-                        f"**[-]**(t.me/blackheadsop) 𝗜𝗻𝗳𝗼: {brand} - {card_type} - {level}\n"
-                        f"**[-]**(t.me/blackheadsop) 𝐈𝐬𝐬𝐮𝐞𝐫: {bank}\n"
-                        f"**[-]**(t.me/blackheadsop) 𝐂𝗼𝐮𝐧𝐭𝐫𝐲: {country} {country_flag}\n\n"
+                        f"**[-]**(t.me/verifiedscam) 𝐀𝐩𝐩𝐫𝗼𝐯𝗲𝐝 ✅\n\n"
+                        f"**[-]**(t.me/verifiedscam) 𝗖𝗮𝗿𝗱: `{card_info}`\n"
+                        f"**[-]**(t.me/verifiedscam) 𝐆𝐚𝐭𝐞𝐰𝐚𝐲: Braintree Auth 4\n"
+                        f"**[-]**(t.me/verifiedscam) 𝐑𝐞𝐬𝗽𝗼𝐧𝐬𝗲: `1000: Approved`\n\n"
+                        f"**[-]**(t.me/verifiedscam) 𝗜𝗻𝗳𝗼: {brand} - {card_type} - {level}\n"
+                        f"**[-]**(t.me/verifiedscam) 𝐈𝐬𝐬𝐮𝐞𝐫: {bank}\n"
+                        f"**[-]**(t.me/verifiedscam) 𝐂𝗼𝐮𝐧𝐭𝐫𝐲: {country} {country_flag}\n\n"
                         f"𝗧𝗶𝗺𝗲: {formatted_time_taken}"
                     )
 
                     # Send the formatted message
-                    await client.send_message('scrappin', formatted_message, link_preview=False)
+                    await client.send_message('scrappin', formatted_message, disable_web_page_preview=True)
                     await asyncio.sleep(30)  # Wait for 30 seconds before sending the next message
     except Exception as e:
         print(e)
 
 # Main function to start the client
 async def main():
-    await client.start(phone=phone_number)
+    await app.start()
     print("Client Created")
-    await client.run_until_disconnected()
+    await app.idle()
 
 # Run the main function
 asyncio.run(main())
